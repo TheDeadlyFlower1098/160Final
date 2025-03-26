@@ -1,0 +1,65 @@
+SHOW DATABASES;
+
+CREATE DATABASE testing;
+USE testing;
+
+-- User Table
+Create table user (
+user_id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+name VARCHAR(50) NOT NULL,
+email VARCHAR(100) UNIQUE NOT NULL,
+password VARCHAR(100) UNIQUE NOT NULL, 
+role ENUM('Teacher', 'Student') NOT NULL);
+
+-- Teacher Table (Subclass of User)
+CREATE TABLE teacher (
+    teacher_id INT PRIMARY KEY,
+    subject VARCHAR(50) NOT NULL,
+    FOREIGN KEY (teacher_id) REFERENCES User(user_id)
+);
+
+-- Student Table (Subclass of User)
+CREATE TABLE student (
+    student_id INT PRIMARY KEY,
+    grade_level VARCHAR(10) NOT NULL,
+    FOREIGN KEY (student_id) REFERENCES User(user_id)
+);
+
+-- Test Table
+CREATE TABLE test (
+    test_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    create_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    teacher_id INT,
+    FOREIGN KEY (teacher_id) REFERENCES teacher(teacher_id)
+);
+
+-- Question Table
+CREATE TABLE question (
+    question_id INT AUTO_INCREMENT PRIMARY KEY,
+    test_id INT,
+    question_text TEXT NOT NULL,
+    FOREIGN KEY (test_id) REFERENCES test(test_id)
+);
+
+-- StudentTest Table (Bridge Table for Many-to-Many Relationship)
+CREATE TABLE student_test (
+    student_test_id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id INT,
+    test_id INT,
+    sate_taken DATETIME DEFAULT CURRENT_TIMESTAMP,
+    score INT NULL,
+    FOREIGN KEY (student_id) REFERENCES student(student_id),
+    FOREIGN KEY (test_id) REFERENCES test(test_id),
+    UNIQUE (student_id, test_id) -- Ensures a student can only take a test once
+);
+
+-- Answer Table
+CREATE TABLE Answer (
+    answer_id INT AUTO_INCREMENT PRIMARY KEY,
+    student_test_id INT,
+    question_id INT,
+    answer_text TEXT NULL,
+    FOREIGN KEY (student_test_id) REFERENCES student_test(student_test_id),
+    FOREIGN KEY (question_id) REFERENCES question(question_id)
+);
