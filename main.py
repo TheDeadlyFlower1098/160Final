@@ -10,7 +10,21 @@ conn = engine.connect()
 # Home route - displays the home page
 @app.route('/')
 def hello():
-    return render_template('base.html')
+    return render_template('signup.html')
+@app.route('/signup', methods = ['GET'])
+def getBoat():
+    return render_template('signup.html')
+
+@app.route('/signup', methods = ['POST'])
+def createBoat():
+    try:
+        conn.execute(text('INSERT INTO  VALUES ()'), request.form)
+        conn.commit
+        return render_template('signup.html', error=None, success='successful')
+    
+    except:
+        return render_template('signup.html.html', error = "fail", success = None)
+
 
 @app.route('/accounts')
 def accounts():
