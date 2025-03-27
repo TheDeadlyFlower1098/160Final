@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block body %}
+    <div class="body">
+        {% if error %}
+            <h2>{{ error }}</h2>
+        {% endif %}
+        {% if success %}
+            <h2>{{ success }}</h2>
+        {% endif %}
+
+        <form class="signup_input" action="/signup" method="POST">
+            <input type="text" name="name" placeholder="name" class="input_field"> <br>
+            <input type="text" name="email" placeholder="example@email.com" class="input_field"> <br>
+            <input type="number" name="id" placeholder="ID" class="input_field"> <br>
+            <input type="submit" value="Submit" class="input_submit">
+        </form>
+    </div>
+{% endblock %}
+
