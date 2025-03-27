@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block body %}
+    <h2>Search for a Teacher or Student</h2>
+    
+    <form method="get" action="/accounts">
+        <label for="role">Filter by Role:</label>
+        <select name="role" id="role" onchange="this.form.submit()">
+            <option value="All" {% if role_filter == 'All' %}selected{% endif %}>All</option>
+            <option value="Teacher" {% if role_filter == 'Teacher' %}selected{% endif %}>Teachers</option>
+            <option value="Student" {% if role_filter == 'Student' %}selected{% endif %}>Students</option>
+        </select>
+    </form>
+    
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+        </tr>
+        {% for user in users %}
+        <tr>
+            <td>{{ user.user_id }}</td>
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.role }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
