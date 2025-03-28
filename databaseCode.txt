@@ -1,5 +1,3 @@
-SHOW DATABASES;
-
 CREATE DATABASE testing;
 USE testing;
 
@@ -18,12 +16,18 @@ CREATE TABLE teacher (
     FOREIGN KEY (teacher_id) REFERENCES User(user_id)
 );
 
+ALTER TABLE teacher
+ADD COLUMN name VARCHAR(50);
+
 -- Student Table (Subclass of User)
 CREATE TABLE student (
     student_id INT PRIMARY KEY,
     grade_level VARCHAR(10) NOT NULL,
     FOREIGN KEY (student_id) REFERENCES User(user_id)
 );
+
+ALTER TABLE teacher
+ADD COLUMN name VARCHAR(50);
 
 -- Test Table
 CREATE TABLE test (
@@ -63,3 +67,81 @@ CREATE TABLE Answer (
     FOREIGN KEY (student_test_id) REFERENCES student_test(student_test_id),
     FOREIGN KEY (question_id) REFERENCES question(question_id)
 );
+INSERT INTO user (name, email, password, role) 
+VALUES ('John Doe', 'johndoe@example.com', 'securepassword123', 'Teacher');
+
+INSERT INTO teacher (teacher_id, subject) 
+VALUES (LAST_INSERT_ID(), 'Mathematics');
+
+-- Insert Users (10 Teachers, 10 Students) --
+INSERT INTO user (name, email, password, role) VALUES
+('Alice Johnson', 'alice@example.com', 'password1', 'Teacher'),
+('Bob Smith', 'bob@example.com', 'password2', 'Teacher'),
+('Charlie Brown', 'charlie@example.com', 'password3', 'Teacher'),
+('Diana White', 'diana@example.com', 'password4', 'Teacher'),
+('Evan Black', 'evan@example.com', 'password5', 'Teacher'),
+('Fiona Green', 'fiona@example.com', 'password6', 'Teacher'),
+('George Miller', 'george@example.com', 'password7', 'Teacher'),
+('Hannah Wilson', 'hannah@example.com', 'password8', 'Teacher'),
+('Ian Moore', 'ian@example.com', 'password9', 'Teacher'),
+('Jessica Adams', 'jessica@example.com', 'password10', 'Teacher'),
+
+('Kevin Scott', 'kevin@example.com', 'password11', 'Student'),
+('Laura Lewis', 'laura@example.com', 'password12', 'Student'),
+('Michael Young', 'michael@example.com', 'password13', 'Student'),
+('Nancy Hall', 'nancy@example.com', 'password14', 'Student'),
+('Oscar King', 'oscar@example.com', 'password15', 'Student'),
+('Paula Wright', 'paula@example.com', 'password16', 'Student'),
+('Quincy Baker', 'quincy@example.com', 'password17', 'Student'),
+('Rachel Perez', 'rachel@example.com', 'password18', 'Student'),
+('Steve Carter', 'steve@example.com', 'password19', 'Student'),
+('Tina Roberts', 'tina@example.com', 'password20', 'Student');
+
+INSERT INTO teacher (teacher_id, subject) 
+SELECT user_id, 'Math' FROM user WHERE user_id = 1;
+INSERT INTO teacher (teacher_id, subject) 
+SELECT user_id, 'Science' FROM user WHERE user_id = 2;
+INSERT INTO teacher (teacher_id, subject) 
+SELECT user_id, 'History' FROM user WHERE user_id = 3;
+INSERT INTO teacher (teacher_id, subject) 
+SELECT user_id, 'English' FROM user WHERE user_id = 4;
+INSERT INTO teacher (teacher_id, subject) 
+SELECT user_id, 'Biology' FROM user WHERE user_id = 5;
+INSERT INTO teacher (teacher_id, subject) 
+SELECT user_id, 'Physics' FROM user WHERE user_id = 6;
+INSERT INTO teacher (teacher_id, subject) 
+SELECT user_id, 'Chemistry' FROM user WHERE user_id = 7;
+INSERT INTO teacher (teacher_id, subject) 
+SELECT user_id, 'Geography' FROM user WHERE user_id = 8;
+INSERT INTO teacher (teacher_id, subject) 
+SELECT user_id, 'Art' FROM user WHERE user_id = 9;
+INSERT INTO teacher (teacher_id, subject) 
+SELECT user_id, 'Computer Science' FROM user WHERE user_id = 10;
+
+-- Assign Students --
+INSERT INTO student (student_id, grade_level)
+SELECT user_id, '10th' FROM user WHERE user_id = 11;
+INSERT INTO student (student_id, grade_level)
+SELECT user_id, '11th' FROM user WHERE user_id = 12;
+INSERT INTO student (student_id, grade_level)
+SELECT user_id, '9th' FROM user WHERE user_id = 13;
+INSERT INTO student (student_id, grade_level)
+SELECT user_id, '12th' FROM user WHERE user_id = 14;
+INSERT INTO student (student_id, grade_level)
+SELECT user_id, '10th' FROM user WHERE user_id = 15;
+INSERT INTO student (student_id, grade_level)
+SELECT user_id, '11th' FROM user WHERE user_id = 16;
+INSERT INTO student (student_id, grade_level)
+SELECT user_id, '9th' FROM user WHERE user_id = 17;
+INSERT INTO student (student_id, grade_level)
+SELECT user_id, '12th' FROM user WHERE user_id = 18;
+INSERT INTO student (student_id, grade_level)
+SELECT user_id, '10th' FROM user WHERE user_id = 19;
+INSERT INTO student (student_id, grade_level)
+SELECT user_id, '11th' FROM user WHERE user_id = 20;
+
+select * from user;
+
+
+INSERT INTO user (name, email, password, user_id, role) 
+VALUES ('Test Name', 'test@example.com', 'hashedpassword', 25, 'teacher');
