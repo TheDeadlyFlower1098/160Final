@@ -39,9 +39,22 @@ def create_user():
     except Exception as e:
         return render_template('signup.html', error="Signup failed", success=None)
 
-@app.route('/accounts')
+@app.route('/accounts', methods=['GET', 'POST'])
 def accounts():
-    return render_template('accounts.html')
+    # Handle the filtering logic
+    role_filter = request.args.get('role', 'All')  # Get role filter from query parameters
+    if role_filter == 'Teacher':
+        query = text("SELECT * FROM user WHERE role = 'Teacher'")
+    elif role_filter == 'Student':
+        query = text("SELECT * FROM user WHERE role = 'Student'")
+    else:
+        query = text("SELECT * FROM user")  # Default: show all users
+
+    # Execute the query
+    result = conn.execute(query)
+    users = result.fetchall()  # Get all rows from the query
+
+    return render_template('accounts.html', users=users, role_filter=role_filter)
 
 # Run the Flask application in debug mode
 if __name__ == '__main__':
