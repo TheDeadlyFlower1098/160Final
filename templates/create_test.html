@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<main class="home-container">
+    <section class="hero">
+        <h1>Create a New Test</h1>
+        <p>Fill out the form below to create a new test and add questions.</p>
+    </section>
+
+    <section class="form-container">
+        <!-- Display success or error message -->
+        {% if success %}
+            <p class="alert-success">{{ success }}</p>
+        {% elif error %}
+            <p class="alert-error">{{ error }}</p>
+        {% endif %}
+        
+        <form action="/create_test" method="POST">
+            <div class="form-group">
+                <label for="test_name">Test Name:</label>
+                <input type="text" id="test_name" name="test_name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="teacher_id">Assign Teacher:</label>
+                <select id="teacher_id" name="teacher_id" required>
+                    <option value="">Select Teacher</option>
+                    {% for teacher in teachers %}
+                        <option value="{{ teacher.teacher_id }}">{{ teacher.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <h3>Questions</h3>
+            <div id="question_container">
+                <div class="question" id="question_1">
+                    <label for="question1">Question 1:</label>
+                    <textarea name="questions" required></textarea>
+                </div>
+            </div>
+
+            <button type="button" class="btn" onclick="addQuestion()">Add More Questions</button>
+            <br><br>
+
+            <button type="submit" class="btn">Create Test</button>
+        </form>
+    </section>
+</main>
+
+<style>
+    .home-container {
+        text-align: center;
+        padding: 40px;
+    }
+
+    .hero {
+        background-color: #f8f9fa;
+        padding: 50px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .hero h1 {
+        font-size: 36px;
+        margin-bottom: 20px;
+    }
+
+    .hero p {
+        font-size: 18px;
+        color: #555;
+    }
+
+    .form-container {
+        margin-top: 40px;
+        background-color: white;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+        text-align: left;
+    }
+
+    .form-group label {
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .form-group input, .form-group select, .form-group textarea {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        margin-top: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    .form-group textarea {
+        height: 120px;
+        resize: vertical;
+    }
+
+    .btn {
+        padding: 12px 20px;
+        background-color: #007bff;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        margin-top: 10px;
+        display: inline-block;
+    }
+
+    .btn:hover {
+        background-color: #0056b3;
+    }
+
+    .alert-success {
+        color: green;
+        font-size: 18px;
+    }
+
+    .alert-error {
+        color: red;
+        font-size: 18px;
+    }
+</style>
+
+<script>
+    let questionCount = 1;
+
+    function addQuestion() {
+        questionCount++;
+        var questionContainer = document.getElementById('question_container');
+        var newQuestionDiv = document.createElement('div');
+        newQuestionDiv.classList.add('question');
+        newQuestionDiv.id = 'question_' + questionCount;
+        newQuestionDiv.innerHTML = `
+            <label for="question${questionCount}">Question ${questionCount}:</label>
+            <textarea name="questions" required></textarea>
+        `;
+        questionContainer.appendChild(newQuestionDiv);
+    }
+</script>
+{% endblock %}
