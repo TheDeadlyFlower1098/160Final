@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <div>
+        {% for user in users %}
+        <div style=" display: flex; flex-direction: column;">
+            <ul style="list-style: none;">
+                <strong style="color: rgb(241, 170, 95);">USER INFO</strong>
+                <li class="user_list"><strong>ID: </strong> {{ user[0] }}</li>
+                <li class="user_list"><strong>Name: </strong> {{ user[1] }}</li>
+                <li class="user_list"><strong>Email: </strong> {{ user[2] }}</li>
+                <li class="user_list"><strong>Role: </strong> {{ user[4] }}</li>
+            </ul>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}
