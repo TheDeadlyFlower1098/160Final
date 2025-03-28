@@ -10,9 +10,21 @@
         {% endif %}
 
         <form class="signup_input" action="/signup" method="POST">
+            <h1>SIGN UP</h1>
+            <p>Enter name:</p>
             <input type="text" name="name" placeholder="name" class="input_field"> <br>
+            <p>Enter email:</p>
             <input type="text" name="email" placeholder="example@email.com" class="input_field"> <br>
+            <p>Enter password:</p>
+            <input type="text" name="password" placeholder="password" class="input_field"> <br>
+            <p>Enter ID:</p>
             <input type="number" name="id" placeholder="ID" class="input_field"> <br>
+            <label for="role">Role:</label>
+            <select name="role" class="input_field" id="role">
+                <option value="teacher">Teacher</option>
+                <option value="student">Student</option>
+            </select> <br>
+        
             <input type="submit" value="Submit" class="input_submit">
         </form>
     </div>

@@ -1,11 +1,12 @@
 from flask import Flask, render_template, request
 from sqlalchemy import create_engine, text
+from werkzeug.security import generate_password_hash 
 
 app = Flask(__name__) #Initialize the Flask app
 
 # Database connection string (update credentials as needed)
 # Formating: mysql://user:password@server/database
-con_str = "mysql://root:cset155@localhost/boatdb"
+con_str = "mysql://root:cset155@localhost/testing"
 engine = create_engine(con_str, echo=True)
 conn = engine.connect() #creates the database engine
 
@@ -14,19 +15,30 @@ conn = engine.connect() #creates the database engine
 def hello():
     return render_template('signup.html')
 @app.route('/signup', methods = ['GET'])
-def getBoat():
+def signup():
     return render_template('signup.html')
 
 @app.route('/signup', methods = ['POST'])
-def createBoat():
+def create_user():
     try:
-        conn.execute(text('INSERT INTO  VALUES ()'), request.form)
-        conn.commit
-        return render_template('signup.html', error=None, success='successful')
-    
-    except:
-        return render_template('signup.html.html', error = "fail", success = None)
+        name = request.form['name']
+        email = request.form['email']
+        password = request.form['password']
+        user_id = request.form['user_id']
+        role = request.form['role'] 
+        hashed_password = generate_password_hash(password)
 
+        conn.execute(
+            text('INSERT INTO user (name, email, password, user_id, role) VALUES (:name, :email, :password, :user_id, :role)'),
+            {'name': name, 'email': email, 'password': hashed_password, 'user_id': user_id, 'role': role}
+        )
+
+        conn.commit()
+
+        return render_template('signup.html', error=None, success='Signup successful')
+
+    except Exception as e:
+        return render_template('signup.html', error="Signup failed", success=None)
 
 
 # Run the Flask application in debug mode
