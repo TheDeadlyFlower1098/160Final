@@ -12,17 +12,27 @@ conn = engine.connect()
 @app.route('/')
 def hello():
     return render_template('base.html')
-@app.route('/accounts')
+@app.route('/accounts', methods=['GET'])
 def accounts():
-   # Retrieve the first 10 users from the 'user' table
-   users = conn.execute(text('SELECT * FROM user')).fetchall()
-   return render_template('accounts.html', users=users[:10])
+    role_filter = request.args.get('role', 'All')  # Default to 'All' if no filter is applied
+    
+    if role_filter == 'All':
+        users = conn.execute(text('SELECT * FROM user')).fetchall()
+    else:
+        users = conn.execute(
+            text('SELECT * FROM user WHERE role = :role'),
+            {'role': role_filter}
+        ).fetchall()
+
+    return render_template('accounts.html', users=users, role_filter=role_filter)
+
+
 @app.route('/signup', methods=['GET'])
-def signup():
+def signup_page():
     return render_template('signup.html')
 
 @app.route('/signup', methods=['POST'])
-def createUser():
+def create_user():
     try:
         # Get form data
         name = request.form['name']
@@ -38,6 +48,9 @@ def createUser():
         # Hash the password before storing it in the database
         # hashed_password = generate_password_hash(password)
         
+        # Log the data to make sure everything is correct
+        print(f"Inserting user data: {name}, {email}, {user_id}, {role}")
+        
         # Insert the new user into the database
         conn.execute(
             text('INSERT INTO user (name, email, password, user_id, role) VALUES (:name, :email, :password, :user_id, :role)'),
@@ -48,11 +61,9 @@ def createUser():
         return render_template('signup.html', error=None, success='Signup successful')
 
     except Exception as e:
-
-        # Log the error for debugging
-        print(f"Error occurred during signup: {e}")
-        return render_template('signup.html', error="Signup failed", success=None)
-
+        # Log the error for debugging (you could log to a file for production)
+        print(f"Error occurred during signup: {e}")  # Log the full error message
+        return render_template('signup.html', error=f"Signup failed: {e}", success=None)
 
 
 # Run the Flask application in debug mode
