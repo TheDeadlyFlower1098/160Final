@@ -14,10 +14,11 @@ form {
 }
 
 select {
-    padding: 8px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 14px;
+    padding: 10px;
+    border: 2px solid #007BFF;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
 }
 
 table {

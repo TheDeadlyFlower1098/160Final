@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<main class="home-container">
+    <section class="hero">
+        <h1>Welcome to ExamEase</h1>
+        <p>Your go-to platform for seamless online exam management.</p>
+        <div class="hero-buttons">
+            <a href="/signup" class="btn">Sign Up</a>
+            <a href="/accounts" class="btn">View Accounts</a>
+        </div>
+    </section>
+    
+    <section class="features">
+        <div class="feature">
+            <h2>Manage Accounts</h2>
+            <p>Create and filter teacher or student accounts effortlessly.</p>
+        </div>
+        <div class="feature">
+            <h2>Create & Take Tests</h2>
+            <p>Teachers can create tests, while students can take and submit them.</p>
+        </div>
+        <div class="feature">
+            <h2>Test Analytics</h2>
+            <p>Monitor test submissions and grading with comprehensive insights.</p>
+        </div>
+    </section>
+</main>
+
+<style>
+    .home-container {
+        text-align: center;
+        padding: 40px;
+    }
+    .hero {
+        background-color: #f8f9fa;
+        padding: 50px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .hero-buttons .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        margin: 10px;
+        background-color: #007bff;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+    .features {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 40px;
+    }
+    .feature {
+        width: 30%;
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+</style>
+{% endblock %}

@@ -10,8 +10,9 @@ conn = engine.connect()
 
 # Home route - displays the home page
 @app.route('/')
-def hello():
-    return render_template('signup.html')
+def home():
+    return render_template('home.html')
+
 @app.route('/signup', methods = ['GET'])
 def signup():
     return render_template('signup.html')
