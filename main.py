@@ -66,6 +66,7 @@ def create_user():
         return render_template('signup.html', error=f"Signup failed: {e}", success=None)
 
 
+
 # Run the Flask application in debug mode
 if __name__ == '__main__':
     app.run(debug=True)

@@ -4,8 +4,6 @@
 {% block body %}
     <div>
         <h2>Search for a Teacher or Student</h2>
-
-        <!-- Filter Form -->
         <form method="get" action="/accounts">
             <label for="role">Filter by Role:</label>
             <select name="role" id="role" onchange="this.form.submit()">
@@ -15,7 +13,6 @@
             </select>
         </form>
 
-        <!-- User Information Table -->
         <table border="1">
             <tr>
                 <th>ID</th>
@@ -33,4 +30,6 @@
             {% endfor %}
         </table>
     </div>
+
+
 {% endblock %}
