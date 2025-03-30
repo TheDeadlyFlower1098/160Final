@@ -9,8 +9,9 @@ engine = create_engine(con_str, echo=True)
 conn = engine.connect() 
 
 @app.route('/')
-def hello():
-    return render_template('base.html')
+def home():
+    return render_template('home.html')
+
 @app.route('/accounts', methods=['GET'])
 def accounts():
     role_filter = request.args.get('role', 'All')
