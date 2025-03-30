@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
 from sqlalchemy import create_engine, text
-from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__) 
 
@@ -10,7 +9,7 @@ conn = engine.connect()
 
 @app.route('/')
 def hello():
-    return render_template('base.html')
+    return render_template('home.html')
 @app.route('/accounts', methods=['GET'])
 def accounts():
     role_filter = request.args.get('role', 'All')
@@ -66,29 +65,21 @@ def add_test():
     try:
         test_name = request.form['test_name']
         teacher_id = request.form['teacher_id']
-        questions = request.form.getlist('questions')  # Get a list of questions
-
-        # Insert the test into the database
+        questions = request.form.getlist('questions')
         result = conn.execute(
             text('INSERT INTO test (name, teacher_id) VALUES (:test_name, :teacher_id)'),
             {'test_name': test_name, 'teacher_id': teacher_id}
         )
         conn.commit()
-
-        # Fetch the test_id of the newly created test
         test_id = conn.execute(text('SELECT LAST_INSERT_ID()')).fetchone()[0]
-
-        # Insert questions into the database
         for question_text in questions:
-            if question_text.strip():  # Ensure no empty questions
+            if question_text.strip():  
                 conn.execute(
                     text('INSERT INTO question (test_id, question_text) VALUES (:test_id, :question_text)'),
                     {'test_id': test_id, 'question_text': question_text}
                 )
 
         conn.commit()
-
-        # Fetch teachers again for the POST response (to pass them to the template)
         result = conn.execute(
             text("SELECT teacher.teacher_id, user.name FROM teacher INNER JOIN user ON teacher.teacher_id = user.user_id"))
         teachers = result.fetchall()
@@ -96,7 +87,6 @@ def add_test():
         return render_template('create_test.html', success='Test created successfully!', teachers=teachers)
 
     except Exception as e:
-        # Fetch teachers again if an error occurs
         result = conn.execute(
             text("SELECT teacher.teacher_id, user.name FROM teacher INNER JOIN user ON teacher.teacher_id = user.user_id"))
         teachers = result.fetchall()
@@ -141,6 +131,60 @@ def login_user():
     except Exception as e:
         print(f"Error occurred during login: {e}")
         return render_template('login.html', error="Login failed. Please try again.", success=None)
+    
+@app.route('/test')
+def test():
+   tests = conn.execute(text('SELECT * FROM test')).all()
+   return render_template('test.html', tests = tests[:10])
+
+
+@app.route('/deleteTest/<int:test_id>', methods=['POST'])
+def delete_test(test_id):
+    try:
+        conn.execute(
+            text('DELETE FROM question WHERE test_id = :test_id'),
+            {'test_id': test_id}
+        )
+        conn.execute(
+            text('DELETE FROM test WHERE test_id = :test_id'),
+            {'test_id': test_id}
+        )
+        conn.commit()
+        return redirect(url_for('test', success='Test deleted successfully'))
+    
+    except Exception as e:
+        conn.rollback()
+        print(f"Error occurred while deleting test: {e}")
+        return redirect(url_for('test', error="Failed to delete test"))
+    
+@app.route('/updateTest/<int:test_id>', methods=['GET'])
+def update_test_page(test_id):
+    test = conn.execute(
+        text("SELECT * FROM test WHERE test_id = :test_id"),
+        {'test_id': test_id}
+    ).fetchone()
+    if test:
+        return render_template('update_test.html', test=test)
+    else:
+        return "Test not found", 404
+@app.route('/updateTest/<int:test_id>', methods=['POST'])
+def update_test(test_id):
+    name = request.form['name']
+    create_date = request.form['create_date']
+    teacher_id = request.form['teacher_id']
+    
+    try:
+        conn.execute(
+            text('UPDATE test SET name = :name, create_date = :create_date, teacher_id = :teacher_id WHERE test_id = :test_id'),
+            {'name': name, 'create_date': create_date, 'teacher_id': teacher_id, 'test_id': test_id}
+        )
+        conn.commit()
+        return redirect(url_for('test', success='Test updated successfully'))
+    
+    except Exception as e:
+        conn.rollback()
+        print(f"Error occurred while updating test: {e}")
+        return render_template('update_test.html', error="Failed to update test")
 
 # Run the Flask application in debug mode
 if __name__ == '__main__':
