@@ -8,7 +8,7 @@
     </section>
 
     <section class="form-container">
-        <!-- Display success or error message -->
+        <!-- Display success or error messages -->
         {% if success %}
             <p class="alert-success">{{ success }}</p>
         {% elif error %}
@@ -28,7 +28,7 @@
                     {% for teacher in teachers %}
                         <option value="{{ teacher.teacher_id }}">{{ teacher.name }}</option>
                     {% endfor %}
-                </select>
+                </select>                
             </div>
 
             <h3>Questions</h3>
@@ -36,6 +36,8 @@
                 <div class="question" id="question_1">
                     <label for="question1">Question 1:</label>
                     <textarea name="questions" required></textarea>
+                    <label for="answer1">Correct Answer:</label>
+                    <input type="text" name="answers" required>
                 </div>
             </div>
 
@@ -49,72 +51,69 @@
 
 <style>
     .home-container {
-        background-color: #d8ebff;
         text-align: center;
         padding: 40px;
     }
 
     .hero {
-        background-image: url('https://mekreview.com/wp-content/uploads/2019/07/students-doing-the-exam-in-classroom.jpg');
+        background-image: url('https://www.liberty.edu/casas/academic-success-center/wp-content/uploads/sites/28/2019/08/Test-Taking-2.jpg');
         background-size: cover;
         background-position: center;
-        color: rgb(255, 255, 255);
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, .7);
+        color: white;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         padding: 50px;
         border-radius: 10px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         position: relative;
     }
 
-    .hero h1 {
-        font-size: 36px;
-        margin-bottom: 20px;
-    }
-
-    .hero p {
-        font-size: 18px;
-    }
-
     .form-container {
-        margin-top: 40px;
-        background-color: white;
+        background: white;
         padding: 40px;
         border-radius: 10px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 50%;
+        margin: 40px auto;
+        text-align: left;
     }
 
     .form-group {
         margin-bottom: 20px;
-        text-align: left;
     }
 
     .form-group label {
         font-size: 18px;
         font-weight: bold;
+        display: block;
     }
 
-    .form-group input, .form-group select, .form-group textarea {
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
         width: 100%;
-        padding: 12px;
+        padding: 10px;
         font-size: 16px;
-        margin-top: 10px;
+        margin-top: 5px;
         border-radius: 5px;
         border: 1px solid #ccc;
     }
 
     .form-group textarea {
-        height: 120px;
+        height: 80px;
         resize: vertical;
     }
 
     .btn {
+        display: inline-block;
         padding: 12px 20px;
+        margin: 10px;
         background-color: #007bff;
         color: white;
         text-decoration: none;
         border-radius: 5px;
-        margin-top: 10px;
-        display: inline-block;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
     }
 
     .btn:hover {
@@ -124,16 +123,18 @@
     .alert-success {
         color: green;
         font-size: 18px;
+        text-align: center;
     }
 
     .alert-error {
         color: red;
         font-size: 18px;
+        text-align: center;
     }
 </style>
 
 <script>
-    let questionCount = 1;
+    var questionCount = 1;
 
     function addQuestion() {
         questionCount++;
@@ -144,6 +145,8 @@
         newQuestionDiv.innerHTML = `
             <label for="question${questionCount}">Question ${questionCount}:</label>
             <textarea name="questions" required></textarea>
+            <label for="answer${questionCount}">Correct Answer:</label>
+            <input type="text" name="answers" required>
         `;
         questionContainer.appendChild(newQuestionDiv);
     }

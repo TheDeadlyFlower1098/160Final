@@ -58,8 +58,8 @@ def accounts():
 
 @app.route('/create_test', methods=['GET'])
 def create_test():
-    # Fetch teachers from the database to associate with the test
-    result = conn.execute(text("SELECT * FROM teacher"))
+    # Fetch only users with the role 'Teacher'
+    result = conn.execute(text("SELECT user_id, name FROM user WHERE role = 'Teacher'"))
     teachers = result.fetchall()
     return render_template('create_test.html', teachers=teachers)
 
@@ -68,7 +68,8 @@ def add_test():
     try:
         test_name = request.form['test_name']
         teacher_id = request.form['teacher_id']
-        questions = request.form.getlist('questions')  # Get a list of questions
+        questions = request.form.getlist('questions')  # Get the list of questions
+        answers = request.form.getlist('answers')  # Get the list of correct answers
 
         # Insert the test into the database
         result = conn.execute(
@@ -80,19 +81,34 @@ def add_test():
         # Fetch the test_id of the newly created test
         test_id = conn.execute(text('SELECT LAST_INSERT_ID()')).fetchone()[0]
 
-        # Insert questions into the database
-        for question_text in questions:
-            if question_text.strip():  # Ensure no empty questions
+        # Insert questions and correct answers into the database
+        for i in range(len(questions)):
+            question_text = questions[i].strip()
+            correct_answer = answers[i].strip()
+            if question_text:
                 conn.execute(
                     text('INSERT INTO question (test_id, question_text) VALUES (:test_id, :question_text)'),
                     {'test_id': test_id, 'question_text': question_text}
                 )
+                question_id = conn.execute(text('SELECT LAST_INSERT_ID()')).fetchone()[0]
+
+                # Store the correct answer in the Answer table
+                conn.execute(
+                    text('INSERT INTO Answer (question_id, answer_text) VALUES (:question_id, :answer_text)'),
+                    {'question_id': question_id, 'answer_text': correct_answer}
+                )
 
         conn.commit()
+        # Fetch teachers again so they are available in the template
+        result = conn.execute(text("SELECT user_id, name FROM user WHERE role = 'Teacher'"))
+        teachers = result.fetchall()
 
         return render_template('create_test.html', success='Test created successfully!', teachers=teachers)
 
     except Exception as e:
+        result = conn.execute(text("SELECT user_id, name FROM user WHERE role = 'Teacher'"))
+        teachers = result.fetchall()
+
         return render_template('create_test.html', error="Failed to create test", teachers=teachers)
 
 

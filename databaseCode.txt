@@ -67,11 +67,6 @@ CREATE TABLE Answer (
     FOREIGN KEY (student_test_id) REFERENCES student_test(student_test_id),
     FOREIGN KEY (question_id) REFERENCES question(question_id)
 );
-INSERT INTO user (name, email, password, role) 
-VALUES ('John Doe', 'johndoe@example.com', 'securepassword123', 'Teacher');
-
-INSERT INTO teacher (teacher_id, subject) 
-VALUES (LAST_INSERT_ID(), 'Mathematics');
 
 -- Insert Users (10 Teachers, 10 Students) --
 INSERT INTO user (name, email, password, role) VALUES
@@ -141,7 +136,3 @@ INSERT INTO student (student_id, grade_level)
 SELECT user_id, '11th' FROM user WHERE user_id = 20;
 
 select * from user;
-
-
-INSERT INTO user (name, email, password, user_id, role) 
-VALUES ('Test Name', 'test@example.com', 'hashedpassword', 25, 'teacher');
