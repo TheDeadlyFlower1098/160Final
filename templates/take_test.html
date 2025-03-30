@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<main class="test-container">
+    <h1>Taking Test: {{ test.name }}</h1>
+    <form id="testForm" method="POST">
+        {% for question in questions %}
+        <div class="question">
+            <p><strong>Question {{ loop.index }}:</strong> {{ question.question_text }}</p>
+            <input type="text" name="answers" class="answer-input" placeholder="Enter your answer">
+        </div>
+        {% endfor %}
+        
+        <div class="buttons">
+            <button type="submit" class="btn">Submit Answers</button>
+            <button type="button" class="btn exit-btn">Exit Test</button>
+        </div>
+    </form>
+</main>
+
+<script>
+    document.querySelector(".exit-btn").addEventListener("click", function() {
+        let unanswered = false;
+        document.querySelectorAll(".answer-input").forEach(input => {
+            if (!input.value.trim()) unanswered = true;
+        });
+
+        if (unanswered) {
+            if (!confirm("You have unanswered questions. Do you still want to exit?")) {
+                return;
+            }
+        }
+        
+        // Submit form with empty values for unanswered questions
+        document.querySelectorAll(".answer-input").forEach(input => {
+            if (!input.value.trim()) input.value = "NULL"; 
+        });
+
+        document.getElementById("testForm").submit();
+    });
+</script>
+
+<style>
+    .test-container {
+        text-align: center;
+        padding: 40px;
+    }
+
+    .question {
+        background: #f9f9f9;
+        padding: 20px;
+        margin: 10px 0;
+        border-radius: 5px;
+    }
+
+    .answer-input {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    .buttons {
+        margin-top: 20px;
+    }
+
+    .btn {
+        padding: 10px 15px;
+        margin: 5px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .btn.exit-btn {
+        background-color: #dc3545;
+    }
+</style>
+
+{% endblock %}
