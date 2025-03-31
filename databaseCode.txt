@@ -67,11 +67,13 @@ CREATE TABLE student_answers (
     student_id INT,
     test_id INT,
     question_id INT,
-    answer_text TEXT,
-    FOREIGN KEY (student_id) REFERENCES user(user_id),
-    FOREIGN KEY (test_id) REFERENCES test(test_id),
-    FOREIGN KEY (question_id) REFERENCES question(question_id)
+    answer_text TEXT
 );
+
+ALTER TABLE student_answers ADD FOREIGN KEY (student_id) REFERENCES student(student_id);
+ALTER TABLE student_answers ADD FOREIGN KEY (test_id) REFERENCES test(test_id);
+ALTER TABLE student_answers ADD FOREIGN KEY (question_id) REFERENCES question(question_id);
+
 
 -- Insert Users (10 Teachers, 10 Students) --
 INSERT INTO user (name, email, password, role) VALUES
