@@ -1,5 +1,6 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 from sqlalchemy import create_engine, text
+from werkzeug.security import generate_password_hash 
 
 app = Flask(__name__) 
 
@@ -65,6 +66,7 @@ def create_user():
 
 @app.route('/create_test', methods=['GET'])
 def create_test():
+
     try:
         # Fetch only teachers (you can adjust this query if necessary)
         result = conn.execute(
@@ -77,7 +79,6 @@ def create_test():
         print(f"Error fetching teachers: {e}")
         return render_template('create_test.html', error="Failed to load teachers.")
 
-
 @app.route('/create_test', methods=['POST'])
 def add_test():
     try:
@@ -89,9 +90,13 @@ def add_test():
             {'test_name': test_name, 'teacher_id': teacher_id}
         )
         conn.commit()
+
+        # Fetch the test_id of the newly created test
         test_id = conn.execute(text('SELECT LAST_INSERT_ID()')).fetchone()[0]
+
         for question_text in questions:
             if question_text.strip():
+
                 conn.execute(
                     text('INSERT INTO question (test_id, question_text) VALUES (:test_id, :question_text)'),
                     {'test_id': test_id, 'question_text': question_text.strip()}
@@ -108,9 +113,46 @@ def add_test():
         print(f"Error occurred while creating test: {e}")
         result = conn.execute(
             text("SELECT teacher.teacher_id, user.name FROM teacher INNER JOIN user ON teacher.teacher_id = user.user_id"))
+
         teachers = result.fetchall()
+
         return render_template('create_test.html', error="Failed to create test", teachers=teachers)
 
+# Route to start a test
+@app.route('/take_test/<int:test_id>', methods=['GET', 'POST'])
+def take_test(test_id):
+    # Get student_id (assuming session or login, for now, we use a test user)
+    student_id = 3  # You should replace this with actual logged-in student's ID
+
+    # Fetch the test details
+    test_result = conn.execute(text("SELECT name FROM test WHERE test_id = :test_id"), {'test_id': test_id})
+    test = test_result.fetchone()
+    if not test:
+        return "Test not found", 404
+
+    # Fetch all questions for the test
+    question_result = conn.execute(text("SELECT question_id, question_text FROM question WHERE test_id = :test_id"), {'test_id': test_id})
+    questions = question_result.fetchall()
+
+    if request.method == 'POST':
+        # Get all answers from the form
+        answers = request.form.getlist('answers')
+
+        for i, question in enumerate(questions):
+            question_id = question[0]
+            answer_text = answers[i].strip() if answers[i].strip() else None  # Store NULL if unanswered
+
+            conn.execute(
+                text('INSERT INTO Answer (student_test_id, question_id, answer_text) VALUES (:student_test_id, :question_id, :answer_text)'),
+                {'student_test_id': student_id, 'question_id': question_id, 'answer_text': answer_text}
+            )
+
+        conn.commit()
+        flash("Test submitted successfully!", "success")
+        return redirect(url_for('home'))
+
+    return render_template('take_test.html', test=test, questions=questions, test_id=test_id)
+    
 
 @app.route('/login', methods=['GET'])
 def login_page():
@@ -187,6 +229,7 @@ def update_test_page(test_id):
         return render_template('update_test.html', test=test)
     else:
         return "Test not found", 404
+    
 @app.route('/updateTest/<int:test_id>', methods=['POST'])
 def update_test(test_id):
     name = request.form['name']
