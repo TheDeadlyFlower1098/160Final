@@ -7,9 +7,17 @@ con_str = "mysql://root:cset155@localhost/testing"
 engine = create_engine(con_str, echo=True)
 conn = engine.connect() 
 
+@app.route('/home')
+def home():
+    return render_template('home.html')
+
 @app.route('/')
 def hello():
-    return render_template('home.html')
+    return render_template('loghome.html')
+@app.route('/logtest')
+def logtest():
+   tests = conn.execute(text('SELECT * FROM test')).all()
+   return render_template('logtest.html', tests = tests[:10])
 @app.route('/accounts', methods=['GET'])
 def accounts():
     role_filter = request.args.get('role', 'All')
@@ -106,46 +114,48 @@ def add_test():
 
 @app.route('/login', methods=['GET'])
 def login_page():
-    return render_template('login.html')
-
+     return render_template('login.html')
+ 
+ 
 @app.route('/login', methods=['POST'])
 def login_user():
-    try:
-        email = request.form['email']
-        password = request.form['password']
+     try:
+         email = request.form['email']
+         password = request.form['password']
+ 
+         print(f"Received email: '{email}'")
+         print(f"Received password: '{password}'")
+ 
+         result = conn.execute(
+             text('SELECT * FROM user WHERE email = :email'),
+             {'email': email}
+         ).fetchone()
+ 
+         print(f"Query result: {result}")
+ 
+         if result:
+             stored_password = result[3]
+             print(f"Stored password: '{stored_password}'")
+ 
+             if stored_password.strip() == password.strip():
+                 print("Login successful")
+                 return render_template('home.html')
+             else:
+                 print("Password mismatch")
+                 return render_template('login.html', error="Invalid password", success=None)
+         else:
+             print("User not found")
+             return render_template('login.html', error="User not found", success=None)
+ 
+     except Exception as e:
+         print(f"Error occurred during login: {e}")
+         return render_template('login.html', error="Login failed. Please try again.", success=None)
 
-        print(f"Received email: '{email}'")
-        print(f"Received password: '{password}'")
-
-        result = conn.execute(
-            text('SELECT * FROM user WHERE email = :email'),
-            {'email': email}
-        ).fetchone()
-
-        print(f"Query result: {result}")
-
-        if result:
-            stored_password = result[3]
-            print(f"Stored password: '{stored_password}'")
-
-            if stored_password.strip() == password.strip():
-                print("Login successful")
-                return render_template('home.html')
-            else:
-                print("Password mismatch")
-                return render_template('login.html', error="Invalid password", success=None)
-        else:
-            print("User not found")
-            return render_template('login.html', error="User not found", success=None)
-
-    except Exception as e:
-        print(f"Error occurred during login: {e}")
-        return render_template('login.html', error="Login failed. Please try again.", success=None)
-    
 @app.route('/test')
 def test():
    tests = conn.execute(text('SELECT * FROM test')).all()
    return render_template('test.html', tests = tests[:10])
+
 
 
 @app.route('/deleteTest/<int:test_id>', methods=['POST'])
