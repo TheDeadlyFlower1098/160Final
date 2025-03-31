@@ -1,0 +1,15 @@
+{% extends 'notlog.html' %}
+
+{% block body %}
+    {% for test in tests %}
+    <div class="test">
+        <ul style="list-style: none;">
+            <strong style="color: rgb(241, 151, 95);">TEST INFO</strong>
+            <li class="test_list"> <strong>ID: </strong> {{test[0]}}</li>
+            <li class="test_list"> <strong>TEST NAME: </strong> {{test[1]}}</li>
+            <li class="test_list"><strong>CREATED: </strong> {{test[2]}}</li>
+            <li class="test_list"> <strong>TEACHER ID: </strong> {{test[3]}}</li>
+        </ul>
+    </div>
+    {% endfor %}
+{% endblock %}

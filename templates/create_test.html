@@ -35,9 +35,9 @@
             <div id="question_container">
                 <div class="question" id="question_1">
                     <label for="question1">Question 1:</label>
-                    <textarea name="questions[]" required></textarea>
+                    <textarea name="questions" required></textarea>
                     <label for="answer1">Correct Answer:</label>
-                    <input type="text" name="answers[]" required>
+                    <input type="text" name="answers" required>
                 </div>
             </div>
 
@@ -144,9 +144,9 @@
         newQuestionDiv.id = 'question_' + questionCount;
         newQuestionDiv.innerHTML = `
             <label for="question${questionCount}">Question ${questionCount}:</label>
-            <textarea name="questions[]" required></textarea>
+            <textarea name="questions" required></textarea>
             <label for="answer${questionCount}">Correct Answer:</label>
-            <input type="text" name="answers[]" required>
+            <input type="text" name="answers" required>
         `;
         questionContainer.appendChild(newQuestionDiv);
     }
