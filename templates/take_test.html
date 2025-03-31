@@ -20,6 +20,9 @@
                     <option value="{{ student[0] }}">{{ student[1] }} (ID: {{ student[0] }})</option>
                 {% endfor %}
             </select>
+            {% if students|length == 0 %}
+                <p style="color: red;">All students have already taken this test.</p>
+            {% endif %}            
         </div>
 
         <h3>Test Questions</h3>
