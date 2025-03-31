@@ -14,24 +14,27 @@ def home():
 
 @app.route('/')
 def hello():
-    return render_template('loghome.html')
-@app.route('/logtest')
-def logtest():
-   tests = conn.execute(text('SELECT * FROM test')).all()
-   return render_template('logtest.html', tests = tests[:10])
+    return render_template('home.html')
+  
 @app.route('/accounts', methods=['GET'])
 def accounts():
     role_filter = request.args.get('role', 'All')
-    
-    if role_filter == 'All':
-        users = conn.execute(text('SELECT * FROM user')).fetchall()
-    else:
-        users = conn.execute(
-            text('SELECT * FROM user WHERE role = :role'),
-            {'role': role_filter}
-        ).fetchall()
+    sort_by = request.args.get('sort_by', 'name')  # Default to sorting by name
 
-    return render_template('accounts.html', users=users, role_filter=role_filter)
+    # Determine the column to sort by
+    if sort_by not in ['name', 'email', 'user_id']:
+        sort_by = 'name'
+
+    # Build the query to filter and sort the users
+    if role_filter == 'All':
+        query = text(f'SELECT * FROM user ORDER BY {sort_by}')
+        users = conn.execute(query).fetchall()
+    else:
+        query = text(f'SELECT * FROM user WHERE role = :role ORDER BY {sort_by}')
+        users = conn.execute(query, {'role': role_filter}).fetchall()
+
+    return render_template('accounts.html', users=users, role_filter=role_filter, sort_by=sort_by)
+
 
 
 @app.route('/signup', methods=['GET'])

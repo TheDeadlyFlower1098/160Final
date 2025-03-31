@@ -1,4 +1,3 @@
-
 {% extends 'base.html' %}
 
 {% block body %}
@@ -11,6 +10,13 @@
                 <option value="All" {% if role_filter == 'All' %}selected{% endif %}>All</option>
                 <option value="Teacher" {% if role_filter == 'Teacher' %}selected{% endif %}>Teachers</option>
                 <option value="Student" {% if role_filter == 'Student' %}selected{% endif %}>Students</option>
+            </select>
+
+            <label for="sort_by">Sort By:</label>
+            <select name="sort_by" id="sort_by" onchange="this.form.submit()">
+                <option value="name" {% if sort_by == 'name' %}selected{% endif %}>Name</option>
+                <option value="email" {% if sort_by == 'email' %}selected{% endif %}>Email</option>
+                <option value="user_id" {% if sort_by == 'user_id' %}selected{% endif %}>ID</option>
             </select>
         </form>
 
@@ -31,6 +37,4 @@
             {% endfor %}
         </table>
     </div>
-
-
 {% endblock %}
