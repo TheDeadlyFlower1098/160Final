@@ -58,7 +58,6 @@ def create_user():
 
 @app.route('/create_test', methods=['GET'])
 def create_test():
-
     try:
         # Fetch only teachers (you can adjust this query if necessary)
         result = conn.execute(
@@ -82,13 +81,9 @@ def add_test():
             {'test_name': test_name, 'teacher_id': teacher_id}
         )
         conn.commit()
-
-        # Fetch the test_id of the newly created test
         test_id = conn.execute(text('SELECT LAST_INSERT_ID()')).fetchone()[0]
-
         for question_text in questions:
             if question_text.strip():
-
                 conn.execute(
                     text('INSERT INTO question (test_id, question_text) VALUES (:test_id, :question_text)'),
                     {'test_id': test_id, 'question_text': question_text.strip()}
@@ -105,45 +100,8 @@ def add_test():
         print(f"Error occurred while creating test: {e}")
         result = conn.execute(
             text("SELECT teacher.teacher_id, user.name FROM teacher INNER JOIN user ON teacher.teacher_id = user.user_id"))
-
         teachers = result.fetchall()
-
         return render_template('create_test.html', error="Failed to create test", teachers=teachers)
-
-# Route to start a test
-@app.route('/take_test/<int:test_id>', methods=['GET', 'POST'])
-def take_test(test_id):
-    # Get student_id (assuming session or login, for now, we use a test user)
-    student_id = 3  # You should replace this with actual logged-in student's ID
-
-    # Fetch the test details
-    test_result = conn.execute(text("SELECT name FROM test WHERE test_id = :test_id"), {'test_id': test_id})
-    test = test_result.fetchone()
-    if not test:
-        return "Test not found", 404
-
-    # Fetch all questions for the test
-    question_result = conn.execute(text("SELECT question_id, question_text FROM question WHERE test_id = :test_id"), {'test_id': test_id})
-    questions = question_result.fetchall()
-
-    if request.method == 'POST':
-        # Get all answers from the form
-        answers = request.form.getlist('answers')
-
-        for i, question in enumerate(questions):
-            question_id = question[0]
-            answer_text = answers[i].strip() if answers[i].strip() else None  # Store NULL if unanswered
-
-            conn.execute(
-                text('INSERT INTO Answer (student_test_id, question_id, answer_text) VALUES (:student_test_id, :question_id, :answer_text)'),
-                {'student_test_id': student_id, 'question_id': question_id, 'answer_text': answer_text}
-            )
-
-        conn.commit()
-        flash("Test submitted successfully!", "success")
-        return redirect(url_for('home'))
-
-    return render_template('take_test.html', test=test, questions=questions, test_id=test_id)
     
 
 @app.route('/login', methods=['GET'])
@@ -238,6 +196,58 @@ def update_test(test_id):
         conn.rollback()
         print(f"Error occurred while updating test: {e}")
         return render_template('update_test.html', error="Failed to update test")
+    
+@app.route('/take_test/<int:test_id>', methods=['GET', 'POST'])
+def take_test(test_id):
+    try:
+        # Fetch students
+        students = conn.execute(
+            text("SELECT user_id, name FROM user WHERE role = 'Student'")
+        ).fetchall()
+
+        # Fetch test questions
+        questions = conn.execute(
+            text("SELECT question_id, question_text FROM question WHERE test_id = :test_id"),
+            {'test_id': test_id}
+        ).fetchall()
+
+        if request.method == 'POST':
+            student_id = request.form['student_id']
+            answers = request.form.getlist('answers[]')
+            question_ids = request.form.getlist('question_ids[]')
+
+            # Ensure student hasn't taken the test before
+            previous_attempt = conn.execute(
+                text("SELECT * FROM student_answers WHERE student_id = :student_id AND test_id = :test_id"),
+                {'student_id': student_id, 'test_id': test_id}
+            ).fetchone()
+
+            if previous_attempt:
+                return render_template('take_test.html', error="You have already taken this test.", students=students, questions=questions)
+
+            # Store responses, allowing null values
+            for i in range(len(question_ids)):
+                answer_text = answers[i].strip() if answers[i].strip() else None  # Convert empty string to None (NULL)
+                conn.execute(
+                    text("INSERT INTO student_answers (student_id, test_id, question_id, answer_text) VALUES (:student_id, :test_id, :question_id, :answer_text)"),
+                    {
+                        'student_id': student_id,
+                        'test_id': test_id,
+                        'question_id': question_ids[i],
+                        'answer_text': answer_text
+                    }
+                )
+
+            conn.commit()
+            return render_template('take_test.html', success="Test submitted successfully!", students=students, questions=questions)
+
+        return render_template('take_test.html', students=students, questions=questions)
+
+    except Exception as e:
+        print(f"Error occurred while taking test: {e}")
+        return render_template('take_test.html', error="Failed to take test")
+
+
 
 # Run the Flask application in debug mode
 if __name__ == '__main__':
