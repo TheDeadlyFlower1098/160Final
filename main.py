@@ -11,10 +11,6 @@ conn = engine.connect()
 @app.route('/')
 def hello():
     return render_template('home.html')
-def home():
-    return render_template('home.html')
-
-
 @app.route('/accounts', methods=['GET'])
 def accounts():
     role_filter = request.args.get('role', 'All')
@@ -73,7 +69,6 @@ def create_test():
     except Exception as e:
         print(f"Error fetching teachers: {e}")
         return render_template('create_test.html', error="Failed to load teachers.")
-
 
 @app.route('/create_test', methods=['POST'])
 def add_test():
