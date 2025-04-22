@@ -1,27 +1,36 @@
+{# Extend the base layout template #}
 {% extends 'base.html' %}
 
+{# Define the content block for the body section #}
 {% block body %}
     <h1>Update Test</h1>
 
+    {# Display error message if there is one #}
     {% if error %}
         <div class="error">{{ error }}</div>
     {% endif %}
 
+    {# Display success message if there is one #}
     {% if success %}
         <div class="success">{{ success }}</div>
     {% endif %}
 
+    {# Form to update an existing test entry #}
     <form method="POST" class="update">
         <div>
             <label for="name">Test Name:</label>
+            {# Prefill input with existing test name from test[1] #}
             <input type="text" id="name" name="name" value="{{ test[1] }}" required>
         </div>
         <div>
             <label for="teacher_id">Teacher ID:</label>
+            {# Prefill input with existing teacher ID from test[3] #}
             <input type="text" id="teacher_id" name="teacher_id" value="{{ test[3] }}" required>
         </div>
+        {# Submit button to update the test #}
         <button class="update_btn" type="submit">Update Test</button>
     </form>
 
+    {# Link to go back to the test list page #}
     <a href="{{ url_for('test') }}">Back to Test List</a>
 {% endblock %}

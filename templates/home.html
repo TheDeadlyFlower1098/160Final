@@ -1,29 +1,47 @@
+{# Extends the base layout for authenticated users #}
 {% extends 'base.html' %}
 
+{# Begin defining the content to be inserted into the 'body' block from base.html #}
 {% block body %}
+
+<!-- Main container for the home/dashboard content -->
 <main class="home-container">
+
+    <!-- Hero section: welcoming message and quick intro -->
     <section class="hero">
         <h1>Welcome to ExamEase</h1>
         <p>Your go-to platform for seamless online exam management.</p>
     </section>
     
+    <!-- Section listing the main features of the platform -->
     <section class="features">
+
+        <!-- Feature 1: Account management capabilities -->
         <div class="feature">
             <h2>Manage Accounts</h2>
             <p>Create and filter teacher or student accounts effortlessly.</p>
         </div>
+
+        <!-- Feature 2: Create and take tests -->
         <div class="feature">
             <h2>Create & Take Tests</h2>
             <p>Teachers can create tests, while students can take and submit them.</p>
+            
+            <!-- Buttons for navigation: Create test and view available tests -->
             <div class="hero-buttons">
                 <a href="/create_test" class="btn">Create a Test</a>
                 <a href="/test" class="btn">See Available Tests</a>
             </div>
         </div>
+
+        <!-- Feature 3: Analytics and test monitoring tools -->
         <div class="feature">
             <h2>Test Analytics</h2>
             <p>Monitor test submissions and grading with comprehensive insights.</p>
         </div>
+
     </section>
 </main>
+
+{# End of the 'body' block #}
 {% endblock %}

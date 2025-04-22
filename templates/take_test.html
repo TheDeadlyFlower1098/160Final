@@ -1,42 +1,44 @@
 {% extends 'base.html' %}
 
 {% block body %}
-    <h1>Take Test</h1>
+    <div class="take-test-container">
+        <h1 class="page-title">Take Test</h1>
 
-    {% if error %}
-        <div class="error">{{ error }}</div>
-    {% endif %}
+        {% if error %}
+        <div class="error-message">{{ error }}</div>
+        {% endif %}
 
-    {% if success %}
-        <div class="success">{{ success }}</div>
-    {% endif %}
+        {% if success %}
+        <div class="success-message">{{ success }}</div>
+        {% endif %}
 
-    <form method="POST">
-        <div>
-            <label for="student_id">Select Student:</label>
-            <select id="student_id" name="student_id" required>
-                <option value="">-- Select a Student --</option>
-                {% for student in students %}
-                    <option value="{{ student[0] }}">{{ student[1] }} (ID: {{ student[0] }})</option>
-                {% endfor %}
-            </select>
-            {% if students|length == 0 %}
-                <p style="color: red;">All students have already taken this test.</p>
-            {% endif %}            
-        </div>
+        <form method="POST" class="test-form">
+            <div class="form-group">
+                <label for="student_id">Select Student:</label>
+                <select id="student_id" name="student_id" required class="input-field">
+                    <option value="">-- Select a Student --</option>
+                    {% for student in students %}
+                        <option value="{{ student[0] }}">{{ student[1] }} (ID: {{ student[0] }})</option>
+                    {% endfor %}
+                </select>
 
-        <h3>Test Questions</h3>
-        {% for question in questions %}
-        <div class="question-box">
-            <label><strong>Q{{ loop.index }}:</strong> {{ question[1] }}</label>
-            <textarea name="answers[]" rows="3" placeholder="Type your answer here..."></textarea>
-            <input type="hidden" name="question_ids[]" value="{{ question[0] }}">
-        </div>
-        {% endfor %}
+                {% if students|length == 0 %}
+                    <p class="warning-message">All students have already taken this test.</p>
+                {% endif %}
+            </div>
 
+            <h3>Test Questions</h3>
+            {% for question in questions %}
+            <div class="question-box">
+                <label><strong>Q{{ loop.index }}:</strong> {{ question[1] }}</label>
+                <textarea name="answers[]" class="answer-textarea" rows="3" placeholder="Type your answer here..."></textarea>
+                <input type="hidden" name="question_ids[]" value="{{ question[0] }}">
+            </div>
+            {% endfor %}
 
-        <button type="submit">Submit Test</button>
-    </form>
+            <button type="submit" class="submit-btn">Submit Test</button>
+        </form>
 
-    <a href="{{ url_for('test') }}">Back to Test List</a>
+        <a href="{{ url_for('test') }}" class="back-link">Back to Test List</a>
+    </div>
 {% endblock %}

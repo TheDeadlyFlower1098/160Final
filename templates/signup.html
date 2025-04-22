@@ -1,31 +1,51 @@
+{# Extend from a layout specifically for non-logged-in users #}
 {% extends "notlog.html" %}
 
+{# Define content to go inside the 'body' block #}
 {% block body %}
     <div class="body">
+
+        {# Show error message if provided #}
         {% if error %}
             <h2>{{ error }}</h2>
         {% endif %}
+
+        {# Show success message if provided #}
         {% if success %}
             <h2>{{ success }}</h2>
         {% endif %}
 
+        {# Signup form sends data to the /signup route using POST method #}
         <form class="signup_input" action="/signup" method="POST">
             <h1>SIGN UP</h1>
+
+            {# Name input field #}
             <p>Enter name:</p>
             <input type="text" name="name" placeholder="name" class="input_field"> <br>
+
+            {# Email input field #}
             <p>Enter email:</p>
             <input type="text" name="email" placeholder="example@email.com" class="input_field"> <br>
+
+            {# Password input field (should ideally use type="password" for security) #}
             <p>Enter password:</p>
             <input type="text" name="password" placeholder="password" class="input_field"> <br>
+
+            {# User ID input field (numerical) #}
             <p>Enter ID:</p>
             <input type="number" name="user_id" placeholder="ID" class="input_field"> <br>
+
+            {# Dropdown to choose a role (teacher or student) #}
             <label for="role">Role:</label>
             <select name="role" class="input_field" id="role">
                 <option value="teacher">Teacher</option>
                 <option value="student">Student</option>
             </select> <br>
+
+            {# Link to redirect to login page #}
             <a href="/login">click here to log in</a>
-        
+
+            {# Submit button to create the account #}
             <input type="submit" value="Submit" class="input_submit">
         </form>
     </div>
