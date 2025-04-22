@@ -70,16 +70,17 @@ def create_user():
 @app.route('/create_test', methods=['GET'])
 def create_test():
     try:
-        # Fetch only teachers (you can adjust this query if necessary)
+        # Fetch all users with the role of Teacher
         result = conn.execute(
-            text("SELECT teacher.teacher_id, user.name FROM teacher INNER JOIN user ON teacher.teacher_id = user.user_id"))
+            text("SELECT user_id AS teacher_id, name FROM user WHERE role = 'Teacher'")
+        )
         teachers = result.fetchall()
-
         return render_template('create_test.html', teachers=teachers)
     
     except Exception as e:
         print(f"Error fetching teachers: {e}")
         return render_template('create_test.html', error="Failed to load teachers.")
+
 
 @app.route('/create_test', methods=['POST'])
 def add_test():
@@ -87,12 +88,15 @@ def add_test():
         test_name = request.form['test_name']
         teacher_id = request.form['teacher_id']
         questions = request.form.getlist('questions') 
-        result = conn.execute(
+
+        conn.execute(
             text('INSERT INTO test (name, teacher_id) VALUES (:test_name, :teacher_id)'),
             {'test_name': test_name, 'teacher_id': teacher_id}
         )
         conn.commit()
+
         test_id = conn.execute(text('SELECT LAST_INSERT_ID()')).fetchone()[0]
+
         for question_text in questions:
             if question_text.strip():
                 conn.execute(
@@ -101,10 +105,23 @@ def add_test():
                 )
 
         conn.commit()
+
+        # Fetch teacher list again for repopulating dropdown
         result = conn.execute(
-            text("SELECT teacher.teacher_id, user.name FROM teacher INNER JOIN user ON teacher.teacher_id = user.user_id"))
+            text("SELECT user_id AS teacher_id, name FROM user WHERE role = 'Teacher'")
+        )
         teachers = result.fetchall()
+
         return render_template('create_test.html', success='Test created successfully!', teachers=teachers)
+
+    except Exception as e:
+        conn.rollback()
+        print(f"Error occurred while creating test: {e}")
+        result = conn.execute(
+            text("SELECT user_id AS teacher_id, name FROM user WHERE role = 'Teacher'")
+        )
+        teachers = result.fetchall()
+        return render_template('create_test.html', error="Failed to create test", teachers=teachers)
 
     except Exception as e:
         conn.rollback()
