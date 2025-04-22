@@ -1,24 +1,38 @@
+{# Inherit layout and structure from 'base.html' #}
 {% extends "base.html" %}
- 
- {% block body %}
-     <div class="body">
-         {% if error %}
-             <h2>{{ error }}</h2>
-         {% endif %}
-         {% if success %}
-             <h2>{{ success }}</h2>
-         {% endif %}
- 
-         <form class="login_input" action="/login" method="POST">
-             <h1>LOG IN</h1>
-             <p>Enter email:</p>
-             <input type="text" name="email" placeholder="example@email.com" class="input_field" required> <br>
-             <p>Enter password:</p>
-             <input type="password" name="password" placeholder="password" class="input_field" required> <br>
- 
-             <input type="submit" value="Log In" class="input_submit">
-         </form>
-         
-         <p>Don't have an account? <a href="/signup">Click here to sign up</a></p>
-     </div>
- {% endblock %}
+
+{# Define content to fill the 'body' block in the base template #}
+{% block body %}
+    <!-- Main container for the login form -->
+    <div class="body">
+
+        {# If there's an error message passed from the backend, display it in an <h2> #}
+        {% if error %}
+            <h2>{{ error }}</h2>
+        {% endif %}
+
+        {# If a success message is passed (e.g., successful registration), display it #}
+        {% if success %}
+            <h2>{{ success }}</h2>
+        {% endif %}
+
+        <!-- Login form that sends data using POST method to the /login route -->
+        <form class="login_input" action="/login" method="POST">
+            <h1>LOG IN</h1>
+
+            <!-- Email input field -->
+            <p>Enter email:</p>
+            <input type="text" name="email" placeholder="example@email.com" class="input_field" required> <br>
+
+            <!-- Password input field (type='password' hides input) -->
+            <p>Enter password:</p>
+            <input type="password" name="password" placeholder="password" class="input_field" required> <br>
+
+            <!-- Submit button to log in -->
+            <input type="submit" value="Log In" class="input_submit">
+        </form>
+
+        <!-- Link to signup page for new users -->
+        <p>Don't have an account? <a href="/signup">Click here to sign up</a></p>
+    </div>
+{% endblock %}

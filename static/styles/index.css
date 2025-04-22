@@ -271,44 +271,216 @@ margin: auto;
   justify-content: center;
 }
 
-
 .home-container {
   text-align: center;
-      padding: 40px;
-    }
+  padding: 40px;
+  }
 
-    .hero {
-        background-image: url('https://www.liberty.edu/casas/academic-success-center/wp-content/uploads/sites/28/2019/08/Test-Taking-2.jpg');
-        background-size: cover;
-        background-position: center;
-        color:white;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        padding: 50px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        position: relative;
-    }
+.hero {
+  background-image: url('https://www.liberty.edu/casas/academic-success-center/wp-content/uploads/sites/28/2019/08/Test-Taking-2.jpg');
+    background-size: cover;
+    background-position: center;
+    color:white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    padding: 50px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
 
-    .hero-buttons .btn {
-        display: inline-block;
-        padding: 10px 20px;
-        margin: 10px;
-        background-color: #007bff;
-        color: white;
-        text-decoration: none;
-        border-radius: 5px;
-    }
+.hero-buttons .btn {
+  display: inline-block;
+  padding: 10px 20px;
+  margin: 10px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+}
 
-    .features {
-        display: flex;
-        justify-content: space-around;
-        margin-top: 40px;
-    }
+.features {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 40px;
+}
     
-    .feature {
-        width: 30%;
-        background: white;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
+.feature {
+  width: 30%;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Test Page Styles */
+.test-container {
+  margin: auto;
+  width: 70%;
+  padding: 20px;
+}
+
+.test-card {
+  background-color: #ffffff;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.test-list {
+  list-style: none;
+  padding: 0;
+}
+
+.test-info-heading {
+  color: rgb(241, 151, 95);
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.test-item {
+  margin-bottom: 8px;
+}
+
+.update-btn {
+  text-decoration: none;
+  color: #d03d03;
+  font-weight: bold;
+  display: inline-block;
+  margin: 10px 0;
+}
+
+.update-btn:hover {
+  color: #062f58;
+  text-decoration: underline;
+}
+
+.delete-btn {
+  background-color: rgb(215, 5, 5);
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 15px;
+}
+
+.delete-btn:hover {
+  background-color: rgb(133, 9, 9);
+}
+
+.take-test-btn {
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+}
+
+.take-test-btn:hover {
+  background-color: #0056b3;
+}
+
+@media screen and (max-width: 768px) {
+  .test-container {
+    width: 90%;
+  }
+}
+
+/* Take Test Page Styles */
+.take-test-container {
+  margin: auto;
+  width: 70%;
+  padding: 20px;
+}
+
+.page-title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.error-message, .success-message {
+  margin: 15px 0;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.success-message {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.test-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.input-field {
+  padding: 12px 20px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.warning-message {
+  color: red;
+}
+
+.question-box {
+  margin-bottom: 20px;
+}
+
+.answer-textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  margin-top: 10px;
+  box-sizing: border-box;
+}
+
+.submit-btn {
+  background-color: #007bff;
+  color: rgb(255, 255, 255);
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  background-color: #0056b3;
+}
+
+.back-link {
+  text-decoration: none;
+  color: #007bff;
+  display: inline-block;
+  margin-top: 20px;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+@media screen and (max-width: 768px) {
+  .take-test-container {
+    width: 90%;
+  }
+}

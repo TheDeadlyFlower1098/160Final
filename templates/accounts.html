@@ -1,40 +1,47 @@
 {% extends 'base.html' %}
 
 {% block body %}
-    <div>
-        <a href="/">log out</a>
+    <div class="accounts-container">
         <h2>Search for a Teacher or Student</h2>
         <form method="get" action="/accounts">
-            <label for="role">Filter by Role:</label>
-            <select name="role" id="role" onchange="this.form.submit()">
-                <option value="All" {% if role_filter == 'All' %}selected{% endif %}>All</option>
-                <option value="Teacher" {% if role_filter == 'Teacher' %}selected{% endif %}>Teachers</option>
-                <option value="Student" {% if role_filter == 'Student' %}selected{% endif %}>Students</option>
-            </select>
+            <div class="form-section">
+                <label for="role">Filter by Role:</label>
+                <select name="role" id="role" onchange="this.form.submit()">
+                    <option value="All" {% if role_filter == 'All' %}selected{% endif %}>All</option>
+                    <option value="Teacher" {% if role_filter == 'Teacher' %}selected{% endif %}>Teachers</option>
+                    <option value="Student" {% if role_filter == 'Student' %}selected{% endif %}>Students</option>
+                </select>
+            </div>
 
-            <label for="sort_by">Sort By:</label>
-            <select name="sort_by" id="sort_by" onchange="this.form.submit()">
-                <option value="name" {% if sort_by == 'name' %}selected{% endif %}>Name</option>
-                <option value="email" {% if sort_by == 'email' %}selected{% endif %}>Email</option>
-                <option value="user_id" {% if sort_by == 'user_id' %}selected{% endif %}>ID</option>
-            </select>
+            <div class="form-section">
+                <label for="sort_by">Sort By:</label>
+                <select name="sort_by" id="sort_by" onchange="this.form.submit()">
+                    <option value="name" {% if sort_by == 'name' %}selected{% endif %}>Name</option>
+                    <option value="email" {% if sort_by == 'email' %}selected{% endif %}>Email</option>
+                    <option value="user_id" {% if sort_by == 'user_id' %}selected{% endif %}>ID</option>
+                </select>
+            </div>
         </form>
 
-        <table border="1">
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Role</th>
-            </tr>
-            {% for user in users %}
-            <tr>
-                <td>{{ user.user_id }}</td>
-                <td>{{ user.name }}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.role }}</td>
-            </tr>
-            {% endfor %}
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td>{{ user.user_id }}</td>
+                        <td>{{ user.name }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.role }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
         </table>
     </div>
 {% endblock %}

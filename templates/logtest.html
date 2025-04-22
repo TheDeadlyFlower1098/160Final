@@ -1,15 +1,37 @@
+{# This template inherits the structure from 'notlog.html' #}
 {% extends 'notlog.html' %}
 
+{# This block replaces the 'body' block defined in the base template #}
 {% block body %}
+
+    {# Loop through each test in the 'tests' list (assumed to be passed from the Flask route) #}
     {% for test in tests %}
+    
+    <!-- Container for displaying each test's information -->
     <div class="test">
+        
+        <!-- Unordered list without bullet points to list test details -->
         <ul style="list-style: none;">
+            
+            <!-- Section title styled with orange color -->
             <strong style="color: rgb(241, 151, 95);">TEST INFO</strong>
-            <li class="test_list"> <strong>ID: </strong> {{test[0]}}</li>
-            <li class="test_list"> <strong>TEST NAME: </strong> {{test[1]}}</li>
-            <li class="test_list"><strong>CREATED: </strong> {{test[2]}}</li>
-            <li class="test_list"> <strong>TEACHER ID: </strong> {{test[3]}}</li>
+            
+            <!-- Display the Test ID -->
+            <li class="test_list"><strong>ID: </strong> {{ test[0] }}</li>
+            
+            <!-- Display the Test Name -->
+            <li class="test_list"><strong>TEST NAME: </strong> {{ test[1] }}</li>
+            
+            <!-- Display the creation date of the test -->
+            <li class="test_list"><strong>CREATED: </strong> {{ test[2] }}</li>
+            
+            <!-- Display the Teacher's ID who created the test -->
+            <li class="test_list"><strong>TEACHER ID: </strong> {{ test[3] }}</li>
         </ul>
     </div>
+
+    {# End of the for-loop #}
     {% endfor %}
+
+{# End of the body block, content here will be rendered in the layout provided by notlog.html #}
 {% endblock %}

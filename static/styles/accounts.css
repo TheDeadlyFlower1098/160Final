@@ -1,23 +1,32 @@
 .accounts-container {
-    width: 80%;
+    width: 70%;
     margin: auto;
     text-align: center;
     padding: 20px;
+    background-color: #fff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
 }
 
 h2 {
+    font-size: 1.5rem;
     margin-bottom: 20px;
+    color: #333;
 }
 
 form {
     margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 select {
-    padding: 8px;
+    padding: 10px;
     border-radius: 5px;
     border: 1px solid #ccc;
     font-size: 14px;
+    margin-left: 10px;
 }
 
 table {
@@ -27,13 +36,13 @@ table {
     background-color: #fff;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
-    overflow: hidden;
 }
 
 table th, table td {
     border: 1px solid #ddd;
-    padding: 10px;
+    padding: 12px;
     text-align: left;
+    font-size: 14px;
 }
 
 table th {
@@ -47,4 +56,14 @@ table tr:nth-child(even) {
 
 table tr:hover {
     background-color: #f1f1f1;
+}
+
+a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+}
+
+a:hover {
+    color: #0056b3;
 }

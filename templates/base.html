@@ -1,124 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+    <!-- Meta charset to ensure proper encoding of special characters -->
     <meta charset="UTF-8">
+    
+    <!-- Linking the external CSS file for styling the page -->
     <link rel="stylesheet" href="../static/styles/index.css">
     
+    <!-- Title of the page, typically displayed in the browser tab -->
     <title>Title</title>
 </head>
-  <body>
+
+<body>
+    <!-- Header section of the webpage -->
     <header>
-      <div class="topBar">
-          <div class="">
-            <img src="https://th.bing.com/th/id/OIP.gpvDoKf_cWcIWbAZW9ZjKQHaHa?rs=1&pid=ImgDetMain" alt="Logo" class="logo">
-              <ul class="barItem">
-                  <li><a href="/home" class="footer__btn">HOME</a></li>
-                  <li><a href="/test" class="footer__btn">TEST</a></li>
-                  <li><a href="/accounts" class="footer__btn">ACCOUNTS</a></li>
-                  <li><a href="/create_test" class="footer__btn">CREATE TEST</a></li>
-                  {% if session.get('user_id') %}
-                    <li><a href="/logout" class="footer__btn">LOG OUT</a></li>
-                  {% endif %}
+        <div class="topBar">
+            <div class="">
+                <!-- Logo image linked to the homepage -->
+                <img src="https://th.bing.com/th/id/OIP.gpvDoKf_cWcIWbAZW9ZjKQHaHa?rs=1&pid=ImgDetMain" alt="Logo" class="logo">
+                
+                <!-- Navigation menu (links) displayed as a horizontal list -->
+                <ul class="barItem">
+                    <li><a href="/home" class="footer__btn">HOME</a></li>  <!-- Link to Home -->
+                    <li><a href="/test" class="footer__btn">TEST</a></li>  <!-- Link to Test -->
+                    <li><a href="/accounts" class="footer__btn">ACCOUNTS</a></li>  <!-- Link to Accounts -->
+                    <li><a href="/create_test" class="footer__btn">CREATE TEST</a></li>  <!-- Link to Create Test -->
+                    
+                    {# Conditionally display the "LOG OUT" link if a user is logged in (i.e., session has 'user_id') #}
+                    {% if session.get('user_id') %}
+                        <li><a href="/logout" class="footer__btn">LOG OUT</a></li>  <!-- Link to Logout -->
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </header>
 
-              </ul>
-          </div>
-          </div>
-      </div>
-  </header>
-
+    <!-- Block for page-specific content; content will be inserted here via blocks in other templates -->
     {% block body %}
-
     {% endblock %}
 
-
+    <!-- Footer section with contact and legal information -->
     <footer class="footer">
         <div class="footer__addr">
-          <h1 class="footer__logo">ExamEase</h1>
-      
-          <h2>kalliandmari@gmail.com</h2>
-      
-          <address>
-            5678 Exam Road, EduTech City, 12345<br>
-      
-            <a class="footer__btn" href="mailto:support@examease.com">Email Support</a>
-          </address>
+            <!-- Footer logo and contact information -->
+            <h1 class="footer__logo">ExamEase</h1>
+            <h2>kalliandmari@gmail.com</h2>
+            <address>
+                5678 Exam Road, EduTech City, 12345<br>
+                <!-- Link to email support -->
+                <a class="footer__btn" href="mailto:support@examease.com">Email Support</a>
+            </address>
         </div>
-      
+
+        <!-- Navigation links in the footer, divided into categories -->
         <ul class="footer__nav">
-          <li class="nav__item">
-            <h2 class="nav__title">Platform</h2>
-      
-            <ul class="nav__ul">
-              <li>
-                <a href="#">Take an Exam</a>
-              </li>
-      
-              <li>
-                <a href="#">Create an Exam</a>
-              </li>
-      
-              <li>
-                <a href="#">Exam Analytics</a>
-              </li>
-            </ul>
-          </li>
-      
-          <li class="nav__item nav__item--extra">
-            <h2 class="nav__title">Resources</h2>
-      
-            <ul class="nav__ul nav__ul--extra">
-              <li>
-                <a href="#">Exam Guidelines</a>
-              </li>
-      
-              <li>
-                <a href="#">Proctoring Services</a>
-              </li>
-      
-              <li>
-                <a href="#">Integrations</a>
-              </li>
-      
-              <li>
-                <a href="#">Security & Compliance</a>
-              </li>
-      
-              <li>
-                <a href="#">AI-Powered Grading</a>
-              </li>
-      
-              <li>
-                <a href="#">FAQs</a>
-              </li>
-            </ul>
-          </li>
-      
-          <li class="nav__item">
-            <h2 class="nav__title">Legal</h2>
-      
-            <ul class="nav__ul">
-              <li>
-                <a href="#">Privacy Policy</a>
-              </li>
-      
-              <li>
-                <a href="#">Terms of Service</a>
-              </li>
-      
-              <li>
-                <a href="#">Accessibility</a>
-              </li>
-            </ul>
-          </li>
+            <li class="nav__item">
+                <h2 class="nav__title">Platform</h2>
+                <ul class="nav__ul">
+                    <li><a href="#">Take an Exam</a></li>  <!-- Link to Take an Exam -->
+                    <li><a href="#">Create an Exam</a></li>  <!-- Link to Create an Exam -->
+                    <li><a href="#">Exam Analytics</a></li>  <!-- Link to Exam Analytics -->
+                </ul>
+            </li>
+
+            <li class="nav__item nav__item--extra">
+                <h2 class="nav__title">Resources</h2>
+                <ul class="nav__ul nav__ul--extra">
+                    <li><a href="#">Exam Guidelines</a></li>  <!-- Link to Exam Guidelines -->
+                    <li><a href="#">Proctoring Services</a></li>  <!-- Link to Proctoring Services -->
+                    <li><a href="#">Integrations</a></li>  <!-- Link to Integrations -->
+                    <li><a href="#">Security & Compliance</a></li>  <!-- Link to Security & Compliance -->
+                    <li><a href="#">AI-Powered Grading</a></li>  <!-- Link to AI-Powered Grading -->
+                    <li><a href="#">FAQs</a></li>  <!-- Link to Frequently Asked Questions -->
+                </ul>
+            </li>
+
+            <li class="nav__item">
+                <h2 class="nav__title">Legal</h2>
+                <ul class="nav__ul">
+                    <li><a href="#">Privacy Policy</a></li>  <!-- Link to Privacy Policy -->
+                    <li><a href="#">Terms of Service</a></li>  <!-- Link to Terms of Service -->
+                    <li><a href="#">Accessibility</a></li>  <!-- Link to Accessibility -->
+                </ul>
+            </li>
         </ul>
-      
+
+        <!-- Legal footer with copyright and branding information -->
         <div class="legal">
-          <p>&copy; 2025 ExamEase. All rights reserved.</p>
-      
-          <div class="legal__links">
-            <span>Empowering online assessments with <span class="heart">❤️</span></span>
-          </div>
+            <p>&copy; 2025 ExamEase. All rights reserved.</p>  <!-- Copyright notice -->
+            <div class="legal__links">
+                <span>Empowering online assessments with <span class="heart">❤️</span></span>  <!-- Branding message with a heart icon -->
+            </div>
         </div>
-      </footer>
-  </body>
+    </footer>
+</body>
+
 </html>

@@ -1,31 +1,46 @@
-
+{# Extend the base layout for users who are not logged in #}
 {% extends 'notlog.html' %}
 
+{# Start filling the 'body' block defined in the notlog.html layout #}
 {% block body %}
 
+<!-- Main container for the home content -->
 <main class="home-container">
+
+    <!-- Hero section with a welcome message and brief intro -->
     <section class="hero">
         <h1>Welcome to ExamEase</h1>
         <p>Your go-to platform for seamless online exam management.</p>
     </section>
     
+    <!-- Features section listing the key functionalities of the platform -->
     <section class="features">
+
+        <!-- Feature 1: Account management info -->
         <div class="feature">
             <h2>Manage Accounts</h2>
             <p>Create and filter teacher or student accounts effortlessly.</p>
         </div>
+
+        <!-- Feature 2: Create & take test functionality + login/signup buttons -->
         <div class="feature">
             <h2>Create & Take Tests</h2>
             <p>Teachers can create tests, while students can take and submit them.</p>
+
+            <!-- Buttons that link to login and signup pages -->
             <div class="hero-buttons">
                 <a href="/login" class="btn">log in</a>
                 <a href="/signup" class="btn">Sign up</a>
             </div>
         </div>
+
+        <!-- Feature 3: Test analytics summary -->
         <div class="feature">
             <h2>Test Analytics</h2>
             <p>Monitor test submissions and grading with comprehensive insights.</p>
         </div>
     </section>
 </main>
+
+{# End the 'body' block #}
 {% endblock %}
