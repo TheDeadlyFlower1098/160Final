@@ -16,6 +16,10 @@
                   <li><a href="/test" class="footer__btn">TEST</a></li>
                   <li><a href="/accounts" class="footer__btn">ACCOUNTS</a></li>
                   <li><a href="/create_test" class="footer__btn">CREATE TEST</a></li>
+                  {% if session.get('user_id') %}
+                    <li><a href="/logout" class="footer__btn">LOG OUT</a></li>
+                  {% endif %}
+
               </ul>
           </div>
           </div>
