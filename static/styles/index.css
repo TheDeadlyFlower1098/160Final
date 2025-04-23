@@ -369,16 +369,28 @@ margin: auto;
   background-color: rgb(133, 9, 9);
 }
 
-.take-test-btn {
+.take-test-btn,
+.view-test-details-btn {
+  display: block; 
   background-color: #007bff;
   color: white;
   text-decoration: none;
   padding: 10px 20px;
   border-radius: 5px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
-.take-test-btn:hover {
+.take-test-btn:hover,
+.view-test-details-btn:hover {
   background-color: #0056b3;
+}
+
+.button-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 15px;
 }
 
 @media screen and (max-width: 768px) {

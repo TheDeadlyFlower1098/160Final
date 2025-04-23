@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <div class="test-details-container">
+        <h2>Test Details: {{ test[1] }}</h2>
+        <p><strong>Test ID:</strong> {{ test[0] }}</p>
+        <p><strong>Created By:</strong> {{ teacher[0] }}</p>
+        <p><strong>Created On:</strong> {{ test[2] }}</p>
+
+        <h3>Questions</h3>
+        <ul>
+            {% for question in questions %}
+                <li>{{ question.question_text }}</li>
+            {% endfor %}
+        </ul>
+
+        <h3>Correct Answers</h3>
+        <ul>
+            {% for answer in correct_answers %}
+                <li>Question {{ answer.question_id }}: {{ answer.answer_text }}</li>
+            {% endfor %}
+        </ul>
+
+        <h3>Student Submissions</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Student Name</th>
+                    <th>Question</th>
+                    <th>Answer</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for submission in submissions %}
+                    <tr>
+                        <td>{{ submission.student_name }}</td>
+                        <td>{{ submission.question_text }}</td>
+                        <td>{{ submission.answer_text }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
