@@ -342,34 +342,7 @@ margin: auto;
   margin-bottom: 8px;
 }
 
-.update-btn {
-  text-decoration: none;
-  color: #d03d03;
-  font-weight: bold;
-  display: inline-block;
-  margin: 10px 0;
-}
-
-.update-btn:hover {
-  color: #062f58;
-  text-decoration: underline;
-}
-
-.delete-btn {
-  background-color: rgb(215, 5, 5);
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-bottom: 15px;
-}
-
-.delete-btn:hover {
-  background-color: rgb(133, 9, 9);
-}
-
-.take-test-btn,
+.take-test-btn, .update-btn, .delete-btn, 
 .view-test-details-btn {
   display: block; 
   background-color: #007bff;
@@ -381,7 +354,7 @@ margin: auto;
   margin-bottom: 10px;
 }
 
-.take-test-btn:hover,
+.take-test-btn:hover, .update-btn:hover, .delete-btn:hover,
 .view-test-details-btn:hover {
   background-color: #0056b3;
 }
