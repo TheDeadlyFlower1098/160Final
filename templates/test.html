@@ -26,10 +26,11 @@
                 </form>
 
                 <li>
-                    <a class="take-test-btn" href="{{ url_for('take_test', test_id=test[0]) }}">
-                        Take Test
-                    </a>
-                </li>
+                    <div class="button-row">
+                        <a class="take-test-btn" href="{{ url_for('take_test', test_id=test[0]) }}">Take Test</a>
+                        <a class="view-test-details-btn" href="{{ url_for('view_test_details', test_id=test[0]) }}">VIEW TEST DETAILS</a>
+                    </div>  
+                </li>                
             </ul>
         </div>
         {% endfor %}

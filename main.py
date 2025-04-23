@@ -224,6 +224,75 @@ def test():
    tests = conn.execute(text('SELECT * FROM test')).all()
    return render_template('test.html', tests = tests[:10])
 
+# Route to view detailed information of a specific test
+@app.route('/view_test_details/<int:test_id>')
+def view_test_details(test_id):
+    try:
+        # Fetch test details
+        test = conn.execute(
+            text("SELECT * FROM test WHERE test_id = :test_id"),
+            {'test_id': test_id}
+        ).fetchone()
+
+        if not test:
+            return "Test not found", 404
+
+        print(f"Test fetched: {test}")  # Debugging line
+
+        # Fetch questions for this test
+        questions = conn.execute(
+            text("SELECT question_id, question_text FROM question WHERE test_id = :test_id"),
+            {'test_id': test_id}
+        ).fetchall()
+
+        print(f"Questions fetched: {questions}")  # Debugging line
+
+        # Fetch correct answers
+        correct_answers = conn.execute(
+            text("""
+                SELECT q.question_id, a.answer_text 
+                FROM question q
+                JOIN answer a ON q.question_id = a.question_id
+                WHERE q.test_id = :test_id AND a.is_correct = 1
+            """),
+            {'test_id': test_id}
+        ).fetchall()
+
+        print(f"Correct answers fetched: {correct_answers}")  # Debugging line
+
+        # Fetch student submissions
+        submissions = conn.execute(
+            text("""
+                SELECT s.name AS student_name, sa.answer_text, q.question_text 
+                FROM student_answers sa
+                JOIN student s ON sa.student_id = s.student_id
+                JOIN question q ON sa.question_id = q.question_id
+                WHERE sa.test_id = :test_id
+            """),
+            {'test_id': test_id}
+        ).fetchall()
+
+        print(f"Submissions fetched: {submissions}")  # Debugging line
+
+        # Fetch teacher details
+        teacher = conn.execute(
+            text("""
+                SELECT u.name 
+                FROM user u
+                JOIN teacher t ON u.user_id = t.teacher_id
+                WHERE t.teacher_id = :teacher_id
+            """),
+            {'teacher_id': test[3]}
+        ).fetchone()
+
+        print(f"Teacher fetched: {teacher}")  # Debugging line
+
+        return render_template('test_details.html', test=test, questions=questions, correct_answers=correct_answers, submissions=submissions, teacher=teacher)
+
+    except Exception as e:
+        print(f"Error occurred while fetching test details: {e}")
+        return "Failed to load test details", 500
+
 # Route to delete a test by its ID
 @app.route('/deleteTest/<int:test_id>', methods=['POST'])
 def delete_test(test_id):
